@@ -12,5 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "mongodb": "^3.6.2"
+  },
+  "engines": {
+    "node": "12.18.4"
   }
 }

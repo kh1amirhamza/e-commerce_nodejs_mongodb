@@ -11,9 +11,10 @@ app.use(express.json())
 const url = 'mongodb+srv://ecommerce:ecommerce@cluster0.p4fnz.mongodb.net?retryWrites=true&w=majority';
 const config = { useUnifiedTopology: true };
 
-
 app.post('/addProduct', function (req,res)){
     let productData = req.body;
+    let productName = productData.name;
+    let productPrice = productData.price;
 
     mongoClient.connect(url,config,function (err,myMangoClient){
         if (error){
@@ -21,10 +22,11 @@ app.post('/addProduct', function (req,res)){
         }else {
             var  productsDb= myMongoClient.db('products');
             var detailsCollec = productsDb.collection('details');
-            //var myData = { _id: id, name: 'product'+id,price: 200+id};
 
             generateId(myMongoClient,function (id){
-            insertData(myMongoClient,id,productData,detailsCollec);});
+                var data = { _id: id, name: productName+id, price: productPrice+id};
+                insertData(myMongoClient,id,data,detailsCollec);
+            });
         }
     });
 }
@@ -42,7 +44,6 @@ mongoClient.connect(url,config,function (error,myMongoClient){
 });
 
 function insertData(myMongoClient,id,productData,collection){
-
 
     collection.insertOne(productData,function (error){
         if (error){
