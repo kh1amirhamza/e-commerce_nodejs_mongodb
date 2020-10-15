@@ -1,6 +1,7 @@
 var mongoClient = require('mongodb').MongoClient;
-const app = express()
+const express = require('express');
 
+const app = express();
 //Middleware...
 app.use(express.json())
 
@@ -11,7 +12,7 @@ app.use(express.json())
 const url = 'mongodb+srv://ecommerce:ecommerce@cluster0.p4fnz.mongodb.net?retryWrites=true&w=majority';
 const config = { useUnifiedTopology: true };
 
-app.post('/addProduct', function (req,res)){
+/*app.post('/addProduct', function (req,res){
     let productData = req.body;
     let productName = productData.name;
     let productPrice = productData.price;
@@ -29,17 +30,29 @@ app.post('/addProduct', function (req,res)){
             });
         }
     });
-}
+});
+
+const PORT = process.env.PORT || 1010
+app.listen(PORT, function (err) {
+    if (err){
+        console.log(err)
+    }else {
+        console.log('Server is running on port: ' + PORT)
+    }
+});*/
 
 mongoClient.connect(url,config,function (error,myMongoClient){
     if (error){
         console.log('Connection Failed!')
     }else {
-
         console.log('Connection Successful.')
+
+        var  productsDb= myMongoClient.db('products');
+        var detailsCollec = productsDb.collection('details');
         generateId(myMongoClient,function (id){
            console.log(id);
-           insertData(myMongoClient,id);});
+            var data = { _id: id, name: 'product'+id, price: 500+id};
+           insertData(myMongoClient,id,data,detailsCollec);});
     }
 });
 
