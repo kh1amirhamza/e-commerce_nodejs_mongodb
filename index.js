@@ -1,12 +1,9 @@
 var mongoClient = require('mongodb').MongoClient;
 const express = require('express');
-
 const app = express();
+
 //Middleware...
 app.use(express.json())
-
-
-
 
 
 const url = 'mongodb+srv://ecommerce:ecommerce@cluster0.p4fnz.mongodb.net?retryWrites=true&w=majority';
@@ -14,10 +11,11 @@ const config = { useUnifiedTopology: true };
 
 app.post('/addProduct', function (req,res){
     let productData = req.body;
-    let productName = productData.name;
-    let productPrice = productData.price;
+    console.log(productData);
+     let productName = productData.name;
+     let productPrice = productData.price;
 
-    mongoClient.connect(url,config,function (err,myMangoClient){
+    mongoClient.connect(url,config,function (error,myMongoClient){
         if (error){
             console.log('Connection Failed!')
         }else {
@@ -26,13 +24,18 @@ app.post('/addProduct', function (req,res){
 
             generateId(myMongoClient,function (id){
                 var data = { _id: id, name: productName+id, price: productPrice+id};
+                //var data = { _id: id, name: 'product'+id, price: 500+id};
                 insertData(myMongoClient,id,data,detailsCollec);
+                res.send('{"message":"Product insert successful"}',)
+                res.end()
             });
         }
     });
+
+
 });
 
-const PORT = process.env.PORT || 1010
+const PORT = process.env.PORT || 2020
 app.listen(PORT, function (err) {
     if (err){
         console.log(err)
