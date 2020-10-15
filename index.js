@@ -12,7 +12,7 @@ app.use(express.json())
 const url = 'mongodb+srv://ecommerce:ecommerce@cluster0.p4fnz.mongodb.net?retryWrites=true&w=majority';
 const config = { useUnifiedTopology: true };
 
-/*app.post('/addProduct', function (req,res){
+app.post('/addProduct', function (req,res){
     let productData = req.body;
     let productName = productData.name;
     let productPrice = productData.price;
@@ -39,9 +39,9 @@ app.listen(PORT, function (err) {
     }else {
         console.log('Server is running on port: ' + PORT)
     }
-});*/
+});
 
-mongoClient.connect(url,config,function (error,myMongoClient){
+/*mongoClient.connect(url,config,function (error,myMongoClient){
     if (error){
         console.log('Connection Failed!')
     }else {
@@ -54,7 +54,7 @@ mongoClient.connect(url,config,function (error,myMongoClient){
             var data = { _id: id, name: 'product'+id, price: 500+id};
            insertData(myMongoClient,id,data,detailsCollec);});
     }
-});
+});*/
 
 function insertData(myMongoClient,id,productData,collection){
 
@@ -101,3 +101,7 @@ function updateLastProductId(MongoClient,currectProductId){
     });
 }
 
+
+
+// git username = kh1amirhamza
+// git password = kh/amir7hamza_ !
